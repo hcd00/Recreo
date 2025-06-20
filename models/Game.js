@@ -48,11 +48,6 @@ const GameSchema = new mongoose.Schema({
         ref: "User",
         default: [],
     },
-    waitList: {
-        type: [mongoose.Types.ObjectId],
-        ref: "User",
-        default: [],
-    },
     createdBy: {
         type: mongoose.Types.ObjectId,
         ref: 'User',
