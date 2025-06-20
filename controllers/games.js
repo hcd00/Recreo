@@ -22,7 +22,7 @@ const getGame = async (req, res) => {
         req.flash("errors", `No game with id ${req.params.id}`);
         return res.redirect("/games");
     }
-    res.render("game", { game, _csrf: req.csrfToken(), errors: req.flash("errors") });
+    res.render("game", { game, errors: req.flash("errors") });
 }
 
 const joinGame = async (req, res) => {
@@ -54,13 +54,10 @@ const showAddGame = async (req, res) => {
 
 //Creates game and adds user to player list.
 const createGame = async (req, res) => {
-    req.body.createdBy = req.user._id;
-    const game = await Game.create(req.body);
-    game.playerList.push(req.user._id);
-    res.render("games", { game: null });
     try {
         const result = await gameSchema.validateAsync(req.body, { abortEarly: false });
         result.createdBy = req.user._id;
+        result.private = false;
         const game = await Game.create(result);
         game.playerList.push(req.user._id);
         await game.save();
@@ -80,17 +77,27 @@ const createGame = async (req, res) => {
 }
 
 const updateGame = async (req, res) => {
+    await gameSchema.validateAsync(req.body, { abortEarly: false });
     //destructure
     const { params: { id: gameId } } = req;
     //Check for atleast 1 field present.
     if (!req.body || Object.keys(req.body).length === 0) {
         throw new Error("Atleast one field must be entered to update.")
     }
-    const game = await Game.findByIdAndUpdate({ _id: gameId, createdBy: req.user._id }, req.body, { new: true, runValidators: true })
+    
+    const game = await Game.findByIdAndUpdate({
+        _id: gameId,
+        createdBy: req.user._id
+    },
+        req.body,
+        { new: true, runValidators: true })
+
     if (!game) {
-        throw new Error(`No game with id ${gameId}`);
+        req.flash("errors", `No game with id ${gameId}`);
+        return res.redirect("/games");
     }
-    res.render("game", { game });
+
+    return res.redirect("/games");
 }
 
 
@@ -100,10 +107,12 @@ const deleteGame = async (req, res) => {
         _id: gameId,
         createdBy: req.user._id
     })
+
     if (!game) {
-        throw new Error(`No game with id ${gameId}`);
+        req.flash("errors", `No game with id ${gameId}`);
+        return res.redirect("/games");
     }
-    res.redirect('/games');
+    return res.redirect('/games');
 }
 
 module.exports = {
