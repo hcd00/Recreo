@@ -1,0 +1,67 @@
+<%- include("partials/head.ejs") %>
+    <%- include("partials/header.ejs") %>
+
+        <h2>
+            <%= game ? "Edit Game" : "Create a New Game" %>
+        </h2>
+
+        <form method="POST" action="<%= game ? '/games/update/' + game._id : '/games' %>">
+            <input type="hidden" name="_csrf" value="<%= _csrf %>">
+
+            <div>
+                <label for="title">Title:</label>
+                <input type="text" id="title" name="title" required maxlength="50"
+                    value="<%= game ? game.title : '' %>">
+            </div>
+
+            <div>
+                <label for="desc">Description:</label>
+                <textarea id="desc" name="desc" maxlength="200"><%= game ? game.desc : '' %></textarea>
+            </div>
+
+            <div>
+                <label for="location">Location:</label>
+                <select id="location" name="location" required>
+                    <option value="">--Select--</option>
+                    <% ['SF Bay Area', 'New York' , 'Arizona' , 'Los Angeles' , 'Chicago' ].forEach(loc=> { %>
+                        <option value="<%= loc %>" <%=game && game.location===loc ? "selected" : "" %>><%= loc %>
+                        </option>
+                        <% }) %>
+                </select>
+            </div>
+
+            <div>
+                <label for="category">Category:</label>
+                <select id="category" name="category" required>
+                    <option value="">--Select--</option>
+                    <% ['Soccer', 'Basketball' , 'Running' , 'Pickleball' ].forEach(cat=> { %>
+                        <option value="<%= cat %>" <%=game && game.category===cat ? "selected" : "" %>><%= cat %>
+                        </option>
+                        <% }) %>
+                </select>
+            </div>
+
+            <div>
+                <label for="startTime">Start Time:</label>
+                <input type="datetime-local" id="startTime" name="startTime" required
+                    value="<%= game ? game.startTime.toISOString().slice(0,16) : '' %>">
+            </div>
+
+            <div>
+                <label for="maxPlayers">Max Players:</label>
+                <input type="number" id="maxPlayers" name="maxPlayers" value="<%= game ? game.maxPlayers : 20 %>"
+                    min="2">
+            </div>
+
+            <div>
+                <label for="private">Private Game:</label>
+                <input type="checkbox" id="private" name="private" <%=game && game.private ? "checked" : "" %>>
+            </div>
+
+            <button type="submit">
+                <%= game ? "Update" : "Create" %>
+            </button>
+            <a href="/games"><button type="button">Cancel</button></a>
+        </form>
+
+        <%- include("partials/footer.ejs") %>

@@ -6,6 +6,7 @@ const MongoDBStore = require("connect-mongodb-session")(session);
 const passport = require("passport");
 const passportInit = require("./passport/passportInit");
 const secretWordRouter = require("./routes/secretWord");
+const gamesRouter = require("./routes/games")
 const auth = require("./middleware/auth");
 const csrf = require('host-csrf');
 const cookieParser = require("cookie-parser");
@@ -86,6 +87,8 @@ app.get("/", (req, res) => {
 });
 
 app.use("/sessions", require("./routes/sessionRoutes"));
+// games route
+app.use("/games", auth, gamesRouter);
 // secret word handling
 app.use("/secretWord", auth, secretWordRouter);
 

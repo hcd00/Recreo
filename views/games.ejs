@@ -1,0 +1,51 @@
+<%- include("partials/head.ejs") %>
+<%- include("partials/header.ejs") %>
+
+<h2>All Games</h2>
+
+<a href="/games/new"><button type="button">Add New Game</button></a>
+
+<table border="1" cellpadding="5" cellspacing="0">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Location</th>
+      <th>Category</th>
+      <th>Start Time</th>
+      <th>Private</th>
+      <th>Full</th>
+      <th>Max Players</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if (games && games.length) { %>
+      <% games.forEach((game) => { %>
+        <tr>
+          <td><%= game.title %></td>
+          <td><%= game.desc %></td>
+          <td><%= game.location %></td>
+          <td><%= game.category %></td>
+          <td><%= game.startTime.toLocaleString() %></td>
+          <td><%= game.private ? "Yes" : "No" %></td>
+          <td><%= game.isFull ? "Yes" : "No" %></td>
+          <td><%= game.maxPlayers %></td>
+          <td>
+            <a href="/games/edit/<%= game._id %>">
+              <button type="button">Edit</button>
+            </a>
+            <form method="POST" action="/games/delete/<%= game._id %>" style="display:inline;">
+              <input type="hidden" name="_csrf" value="<%= _csrf %>">
+              <button type="submit">Delete</button>
+            </form>
+          </td>
+        </tr>
+      <% }); %>
+    <% } else { %>
+      <tr><td colspan="9">No games found.</td></tr>
+    <% } %>
+  </tbody>
+</table>
+
+<%- include("partials/footer.ejs") %>
