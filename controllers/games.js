@@ -1,5 +1,5 @@
 const Game = require('../models/Games');
-
+const gameSchema = require('../utils/gameValidator')
 const getGameBusinessLogic = async (userId, gameId) => {
     return await Game.findOne({
         _id: gameId,
@@ -58,6 +58,25 @@ const createGame = async (req, res) => {
     const game = await Game.create(req.body);
     game.playerList.push(req.user._id);
     res.render("games", { game: null });
+    try {
+        const result = await gameSchema.validateAsync(req.body, { abortEarly: false });
+        result.createdBy = req.user._id;
+        const game = await Game.create(result);
+        game.playerList.push(req.user._id);
+        await game.save();
+        res.redirect("/games");
+    } catch (error) {
+        let messages = [];
+
+        if (error.isJoi && error.details) {
+            messages = error.details.map(e => e.message);
+        } else {
+            messages.push("Something went wrong.");
+        }
+
+        req.flash("errors", messages);
+        return res.redirect("/games");
+    }
 }
 
 const updateGame = async (req, res) => {
