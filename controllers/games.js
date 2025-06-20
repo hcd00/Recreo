@@ -1,26 +1,28 @@
 const Game = require('../models/Games');
 
 const getGameBusinessLogic = async (userId, gameId) => {
-    const game = await Game.findOne({
+    return await Game.findOne({
         _id: gameId,
         createdBy: userId
     })
-    if (!game) {
-        throw new Error(`No game with id ${gameId}`);
-    }
-    return game;
 }
+
+//const getPublicGames = async (req, res) => {}
+
 
 const getAllGames = async (req, res) => {
     const games = await Game.find({ createdBy: req.user._id }).sort('createdAt')
     res.render("games", { games });
 }
 
+//Finds single game and renders games
 const getGame = async (req, res) => {
-    const { params: { id: gameId } } = req;
-    const game = await getGameBusinessLogic(req.user._id, gameId);
-    console.log("Get single game: ", game);
-    res.render("game", { game });
+    const game = await getGameBusinessLogic(req.user._id, req.params.id);
+    if (!game) {
+        req.flash("errors", `No game with id ${req.params.id}`);
+        return res.redirect("/games");
+    }
+    res.render("game", { game, _csrf: req.csrfToken(), errors: req.flash("errors") });
 }
 
 const joinGame = async (req, res) => {
@@ -50,11 +52,12 @@ const showAddGame = async (req, res) => {
     res.render("game", { game: null });
 }
 
+//Creates game and adds user to player list.
 const createGame = async (req, res) => {
     req.body.createdBy = req.user._id;
     const game = await Game.create(req.body);
     game.playerList.push(req.user._id);
-    res.render("game", { game: null });
+    res.render("games", { game: null });
 }
 
 const updateGame = async (req, res) => {
