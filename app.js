@@ -7,12 +7,15 @@ const passport = require("passport");
 const passportInit = require("./passport/passportInit");
 const secretWordRouter = require("./routes/secretWord");
 const auth = require("./middleware/auth");
-
+const csrf = require('host-csrf');
+const cookieParser = require("cookie-parser");
+const helmet = require('helmet')
+const xss = require('xss-clean');
+const rateLimit = require('express-rate-limit');
 const app = express();
 
 app.set("view engine", "ejs");
 app.use(require("body-parser").urlencoded({ extended: true }));
-
 
 const url = process.env.MONGO_URI;
 
@@ -44,9 +47,39 @@ app.use(session(sessionParms));
 passportInit();
 app.use(passport.initialize());
 app.use(passport.session());
-
 app.use(require("connect-flash")());
 app.use(require("./middleware/storeLocals"));
+
+//csrf
+app.use(cookieParser(process.env.SESSION_SECRET));
+app.use(express.urlencoded({ extended: false }));
+let csrf_development_mode = true;
+
+if (app.get("env") === "production") {
+  csrf_development_mode = false;
+  app.set("trust proxy", 1);
+}
+
+const csrf_options = {
+  protected_operations: ["POST", "PATCH", "DELETE"],
+  protected_content_types: ["application/json", "multipart/form-data"],
+  development_mode: csrf_development_mode,
+};
+const csrf_middleware = csrf(csrf_options);
+app.use(csrf_middleware);
+// csrfToken
+app.use((req, res, next) => {
+  res.locals._csrf = csrf.token(req, res);
+  next();
+});
+
+//security
+app.use(rateLimit({
+  windowMS: 15 * 60 * 1000, // 15 min
+  max: 100, // limit each IP to 100 requests per windowMS
+}));
+app.use(helmet());
+app.use(xss());
 
 app.get("/", (req, res) => {
   res.render("index");
