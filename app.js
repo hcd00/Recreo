@@ -5,14 +5,13 @@ const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
 const passport = require("passport");
 const passportInit = require("./passport/passportInit");
-const secretWordRouter = require("./routes/secretWord");
-const gamesRouter = require("./routes/games")
+const gamesRouter = require("./routes/games");
 const auth = require("./middleware/auth");
-const csrf = require('host-csrf');
+const csrf = require("host-csrf");
 const cookieParser = require("cookie-parser");
-const helmet = require('helmet')
-const xss = require('xss-clean');
-const rateLimit = require('express-rate-limit');
+const helmet = require("helmet");
+const xss = require("xss-clean");
+const rateLimit = require("express-rate-limit");
 const app = express();
 
 app.set("view engine", "ejs");
@@ -20,6 +19,7 @@ app.use(require("body-parser").urlencoded({ extended: true }));
 
 const url = process.env.MONGO_URI;
 
+//connect to MONGODB
 const store = new MongoDBStore({
   // may throw an error, which won't be caught
   uri: url,
@@ -29,6 +29,7 @@ store.on("error", function (error) {
   console.log(error);
 });
 
+//session
 const sessionParms = {
   secret: process.env.SESSION_SECRET,
   resave: true,
@@ -62,7 +63,7 @@ if (app.get("env") === "production") {
 }
 
 const csrf_options = {
-  protected_operations: ["POST", "PATCH", "DELETE"],
+  protected_operations: ["POST"],
   protected_content_types: ["application/json", "multipart/form-data"],
   development_mode: csrf_development_mode,
 };
@@ -75,10 +76,12 @@ app.use((req, res, next) => {
 });
 
 //security
-app.use(rateLimit({
-  windowMS: 15 * 60 * 1000, // 15 min
-  max: 100, // limit each IP to 100 requests per windowMS
-}));
+app.use(
+  rateLimit({
+    windowMS: 15 * 60 * 1000, // 15 min
+    max: 100, // limit each IP to 100 requests per windowMS
+  })
+);
 app.use(helmet());
 app.use(xss());
 
@@ -89,9 +92,6 @@ app.get("/", (req, res) => {
 app.use("/sessions", require("./routes/sessionRoutes"));
 // games route
 app.use("/games", auth, gamesRouter);
-// secret word handling
-app.use("/secretWord", auth, secretWordRouter);
-
 
 app.use((req, res) => {
   res.status(404).send(`That page (${req.url}) was not found.`);
