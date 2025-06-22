@@ -5,7 +5,7 @@
             <%= game ? "Edit Game" : "Create a New Game" %>
         </h2>
 
-        <form method="POST" action="<%= game ? '/games/update/' + game._id : '/games' %>">
+        <form method="POST" action="<%= game ? '/games/update/' + game._id : '/games' %>" class="add-game">
             <input type="hidden" name="_csrf" value="<%= _csrf %>">
 
             <div>
@@ -55,7 +55,7 @@
 
             <div>
                 <label for="private">Private Game:</label>
-                <input type="checkbox" id="private" name="private" <%=game && game.private ? "checked" : "" %>>
+                <input type="checkbox" id="private" name="private" value="true" <%=game && game.private ? "true" : "false" %>>
             </div>
 
             <button type="submit">

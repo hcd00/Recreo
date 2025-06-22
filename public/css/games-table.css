@@ -1,0 +1,46 @@
+/* Apply to whole table section */
+#games-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  font-family: Arial, sans-serif;
+}
+
+/* Table header */
+#games-table-header th {
+  background-color: #f4f4f4;
+  padding: 12px;
+  text-align: left;
+  border-bottom: 2px solid #ddd;
+}
+
+/* Table rows */
+#games-table td {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+/* Alternating row colors */
+#games-table tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+/* Hover effect */
+#games-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Buttons */
+#games-table button {
+  padding: 5px 10px;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}
+
+#games-table button:hover {
+  background-color: #0056b3;
+}

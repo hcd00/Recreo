@@ -1,0 +1,40 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #a9d6e5;
+  margin: 0;
+  padding: 0;
+}
+
+header, footer {
+  background-color: #004080;
+  color: white;
+  padding: 1rem;
+  text-align: center;
+}
+
+button {
+    background-color: #01497c;
+}
+
+button:hover {
+    background-color: #468faf;
+}
+a {
+  display: inline-block;
+  margin: 1rem;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  background-color: #01497c;
+  color: white;
+  border-radius: 4px;
+  transition: background-color 0.2s ease-in-out;
+}
+
+a:hover {
+  background-color: #0056b3;
+}
+
+main {
+  padding: 2rem;
+  text-align: center;
+}
