@@ -1,7 +1,10 @@
 <%- include("partials/head.ejs") %> <%- include("partials/header.ejs") %>
-        <% if (user) { %> 
+       <main>
+        <h2>Join or explore games</h2>
+    <% if (user) { %> 
         <a href="/games">Click this link to view your games.</a>
         <a href="/games/all">Click this link to view all public games.</a>
             <% } else { %> <a href="/sessions/logon">Click this link to logon.</a> <a href="/sessions/register">Click
                     this link to register.</a>
+       </main>
                 <% } %> <%- include("partials/footer.ejs") %>

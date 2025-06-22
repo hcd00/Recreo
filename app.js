@@ -89,6 +89,9 @@ app.get("/", (req, res) => {
   res.render("index");
 });
 
+//public folder
+app.use(express.static("public"));
+//session route
 app.use("/sessions", require("./routes/sessionRoutes"));
 // games route
 app.use("/games", auth, gamesRouter);

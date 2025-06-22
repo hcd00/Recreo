@@ -5,7 +5,7 @@
             <%= game ? "Edit Game" : "Create a New Game" %>
         </h2>
 
-        <form method="POST" action="<%= game ? '/games/update/' + game._id : '/games' %>">
+        <form method="POST" action="<%= game ? '/games/update/' + game._id : '/games' %>" class="add-game">
             <input type="hidden" name="_csrf" value="<%= _csrf %>">
 
             <div>
