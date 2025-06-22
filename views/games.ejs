@@ -1,9 +1,10 @@
 <%- include("partials/head.ejs") %>
 <%- include("partials/header.ejs") %>
 
-<h2>All Your Games</h2>
-
+<h2>All Games</h2>
+<% if (user) {%> 
 <a href="/games/new"><button type="button">Add New Game</button></a>
+<% } %>
 
 <table border="1" cellpadding="5" cellspacing="0">
   <thead>
