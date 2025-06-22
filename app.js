@@ -96,6 +96,7 @@ app.use("/sessions", require("./routes/sessionRoutes"));
 // games route
 app.use("/games", auth, gamesRouter);
 
+
 app.use((req, res) => {
   res.status(404).send(`That page (${req.url}) was not found.`);
 });

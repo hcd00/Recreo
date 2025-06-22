@@ -7,7 +7,16 @@ const getGameBusinessLogic = async (userId, gameId) => {
   });
 };
 
-//const getPublicGames = async (req, res) => {}
+const getPublicGames = async (req, res) => {
+  try {
+    const games = await Game.find({ private: false });
+    res.render("games", { games });
+  } catch (err) {
+    console.error("Error fetching public games:", err);
+    req.flash("errors", "Unable to fetch public games.");
+    res.redirect("/games");
+  }
+};
 
 const getAllGames = async (req, res) => {
   const games = await Game.find({ createdBy: req.user._id }).sort("createdAt");
@@ -87,8 +96,9 @@ const createGame = async (req, res) => {
 };
 
 const updateGame = async (req, res) => {
-  await gameSchema.validateAsync(req.body, { abortEarly: false,
-      allowUnknown: true,
+  await gameSchema.validateAsync(req.body, {
+    abortEarly: false,
+    allowUnknown: true,
   });
   //destructure
   const {
@@ -140,4 +150,5 @@ module.exports = {
   deleteGame,
   joinGame,
   showAddGame,
+  getPublicGames,
 };
