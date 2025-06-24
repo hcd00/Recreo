@@ -134,12 +134,19 @@ const deleteGame = async (req, res) => {
     _id: gameId,
     createdBy: req.user._id,
   });
-
   if (!game) {
     req.flash("errors", `No game with id ${gameId}`);
     return res.redirect("/games");
   }
   return res.redirect("/games");
+};
+
+const filterPublicGames = async (req, res) => {
+  //need content from body of request
+  const games = await Game.find({ location: req.body.location, private: false }).sort(
+    "createdAt"
+  );
+  res.render("games", { games });
 };
 
 module.exports = {
@@ -151,4 +158,5 @@ module.exports = {
   joinGame,
   showAddGame,
   getPublicGames,
+  filterPublicGames,
 };

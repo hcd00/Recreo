@@ -1,8 +1,8 @@
-<h1> Recreo: The Games EJS Application</h1>
+<h1> Recreo: The Games App</h1>
 <div>
  <a href="/">Home</a>
 <% if (user) { %>
-    <p>User <%= user.name %> is logged on.</p>
+    <p><%= user.name %> is logged on.</p>
     <form method="POST" action="/sessions/logoff">
         <input type="hidden" name="_csrf" value="<%= _csrf %>">
         <button>Logoff</button>
