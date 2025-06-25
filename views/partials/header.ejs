@@ -1,22 +1,27 @@
-<h1> Recreo: The Games EJS Application</h1>
-<div>
- <a href="/">Home</a>
-<% if (user) { %>
-    <p>User <%= user.name %> is logged on.</p>
-    <form method="POST" action="/sessions/logoff">
-        <input type="hidden" name="_csrf" value="<%= _csrf %>">
-        <button>Logoff</button>
-    </form>
-    </div>
-    <% } %>
-        <% if (errors) { errors.forEach((err)=> { %>
-            <div>
-                Error: <%= err %>
-            </div>
-            <% }) } %>
-                <% if (info) { info.forEach((msg)=> { %>
+<header>
+    <h1> Recreo: The Games App</h1>
+    <div class="nav">
+        <% if (user) { %>
+            <p>
+                <%= user.name %> is logged on.
+            </p>
+            <form method="POST" action="/sessions/logoff">
+                <input type="hidden" name="_csrf" value="<%= _csrf %>">
+                <button>Logoff</button>
+            </form>
+            <% } %>
+                <a href="/">Home</a>
+
+                <% if (errors) { errors.forEach((err)=> { %>
                     <div>
-                        Info: <%= msg %>
+                        Error: <%= err %>
                     </div>
                     <% }) } %>
-                        <hr />
+                        <% if (info) { info.forEach((msg)=> { %>
+                            <div>
+                                Info: <%= msg %>
+                            </div>
+                            <% }) } %>
+                                <hr />
+    </div>
+</header>
