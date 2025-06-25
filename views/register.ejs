@@ -2,10 +2,10 @@
 <div class="form-container">
     <form method="POST" class="user-form">
         <input type="hidden" name="_csrf" value="<%= _csrf %>">
-        <div> <label name="name">Enter your name:</label> <input type="text" name="name" /> </div>
-        <div> <label name="email">Enter your email:</label> <input type="email" name="email" /> </div>
-        <div> <label name="password">Enter your password:</label> <input type="password" name="password" /> </div>
-        <div> <label name="password1">Confirm your password:</label> <input type="password" name="password1" />
+        <div> <label name="name">Enter your name:</label> <input type="text" name="name" required/> </div>
+        <div> <label name="email">Enter your email:</label> <input type="email" name="email" required/> </div>
+        <div> <label name="password">Enter your password:</label> <input type="password" name="password" required /> </div>
+        <div> <label name="password1">Confirm your password:</label> <input type="password" name="password1" required/>
         </div>
         <div> <button>Register</button> <a href="/"> <button type="button">Cancel</button> </a> </div>
     </form> 
