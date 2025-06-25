@@ -69,6 +69,7 @@ const csrf_options = {
 };
 const csrf_middleware = csrf(csrf_options);
 app.use(csrf_middleware);
+
 // csrfToken
 app.use((req, res, next) => {
   res.locals._csrf = csrf.token(req, res);
@@ -95,8 +96,7 @@ app.use(express.static("public"));
 app.use("/sessions", require("./routes/sessionRoutes"));
 // games route
 app.use("/games", auth, gamesRouter);
-
-
+//not found
 app.use((req, res) => {
   res.status(404).send(`That page (${req.url}) was not found.`);
 });

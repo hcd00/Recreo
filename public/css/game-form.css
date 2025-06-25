@@ -48,3 +48,8 @@ button {
   cursor: pointer;
   font-weight: bold;
 }
+
+.action-buttons{
+  display: flex;
+  align-items: center;
+}

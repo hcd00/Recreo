@@ -12,7 +12,6 @@ const getPublicGames = async (req, res) => {
     const games = await Game.find({ private: false });
     res.render("games", { games });
   } catch (err) {
-    console.error("Error fetching public games:", err);
     req.flash("errors", "Unable to fetch public games.");
     res.redirect("/games");
   }
@@ -149,6 +148,13 @@ const filterPublicGames = async (req, res) => {
   res.render("games", { games });
 };
 
+const filterUserGames = async (req, res) => {
+    const games = await Game.find({ location: req.body.location, createdBy: req.user._id}).sort(
+    "createdAt"
+  );
+  res.render("games", { games });
+};
+
 module.exports = {
   getAllGames,
   getGame,
@@ -159,4 +165,5 @@ module.exports = {
   showAddGame,
   getPublicGames,
   filterPublicGames,
+  filterUserGames
 };

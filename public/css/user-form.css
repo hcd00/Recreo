@@ -1,6 +1,8 @@
 .user-form {
-  max-width: 45em;
-  margin: 2rem auto;
+  width: 100%;
+  height:max-content;
+  max-width: 60em;
+  margin: 2em;
   padding: 2rem;
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -8,6 +10,15 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
+.form-container{
+  display: flex;
+  justify-content: center;
+}
+
+.filter-form{
+  width: 20em;
+  margin: 1em;
+}
 form div {
   margin-bottom: 1rem;
 }
