@@ -3,8 +3,9 @@
             <div class="landing-page">
                 <h2>Find or host your next game!</h2>
                 <% if (user) { %>
-                    <section>Thank you for signing in! Head over to view your games to start creating games today!
+                    <section>Thank you for signing in ! Head over to view your games to start creating games today!
                     </section>
+                    <%= user.name %>
                     <a href="/games">View your games</a>
                     <% } else {%>
                         <section>If you are not a registered user, head over to register to sign up and create your own
